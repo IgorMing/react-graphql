@@ -1,37 +1,40 @@
+import gql from 'graphql-tag';
+import { httpClient } from 'utils';
+
 // Actions
-const SIMPLE_CALL = 'HOME/SIMPLE_CALL';
-const RESET_ALL = 'HOME/RESET_ALL';
+const FETCH_INFO = 'HOME/FETCH_INFO';
 
 const INITIAL_STATE = {
-  calls: 0
+  info: {}
 };
 
 // Reducer
 export default function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case SIMPLE_CALL:
+    case FETCH_INFO:
       return {
         ...state,
         calls: state.calls + 1
-      };
-    case RESET_ALL:
-      return {
-        ...state,
-        ...INITIAL_STATE
       };
     default: return state;
   }
 }
 
 // Action Creators
-export function callFlow() {
-  return {
-    type: SIMPLE_CALL
-  };
-}
-
-export function resetFlow() {
-  return {
-    type: RESET_ALL
+export function getInfo() {
+  return async (dispatch) => {
+    const response = await httpClient
+      .query({
+        query: gql`
+        {
+          rates(currency: "USD") {
+            currency
+          }
+        }
+      `
+      });
+    dispatch({
+      type
+    })
   };
 }
