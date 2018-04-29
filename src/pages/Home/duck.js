@@ -5,7 +5,7 @@ import { httpClient } from 'utils';
 const FETCH_INFO = 'HOME/FETCH_INFO';
 
 const INITIAL_STATE = {
-  info: {}
+  users: []
 };
 
 // Reducer
@@ -14,7 +14,7 @@ export default function reducer(state = INITIAL_STATE, action) {
     case FETCH_INFO:
       return {
         ...state,
-        calls: state.calls + 1
+        users: action.payload
       };
     default: return state;
   }
@@ -23,18 +23,21 @@ export default function reducer(state = INITIAL_STATE, action) {
 // Action Creators
 export function getInfo() {
   return async (dispatch) => {
-    const response = await httpClient
-      .query({
-        query: gql`
+    const response = await httpClient.query({
+      query: gql`
         {
-          rates(currency: "USD") {
-            currency
+          users {
+            id,
+            name,
+            cpf
           }
         }
       `
-      });
+    });
+
     dispatch({
-      type
-    })
+      type: FETCH_INFO,
+      payload: response.data.users
+    });
   };
 }

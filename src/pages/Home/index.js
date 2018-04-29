@@ -5,21 +5,47 @@ import { connect } from 'react-redux';
 import { logoutAction } from 'components/Auth/duck';
 
 import './index.css';
-import { callFlow, resetFlow, getInfo } from './duck';
+import { getInfo } from './duck';
 
 const mapStateToProps = ({ home }) => ({ ...home });
 const mapDispatchToProps = {
-  callFlow,
   getInfo,
-  logout: logoutAction,
-  resetFlow
+  logout: logoutAction
 };
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class Home extends Component {
   static propTypes = {
     logout: PropTypes.func.isRequired,
-    getInfo: PropTypes.func.isRequired
+    getInfo: PropTypes.func.isRequired,
+    users: PropTypes.array.isRequired
+  }
+
+  get renderNames() {
+    const { users } = this.props;
+
+    if (users.length === 0) {
+      return <strong>No users to be shown.</strong>;
+    }
+
+    return (
+      <table>
+        <thead>
+          <tr>
+            <td>Name</td>
+            <td>CPF</td>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((each) => (
+            <tr key={each.id}>
+              <td>{each.name}</td>
+              <td>{each.cpf}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   }
 
   fetchInfo = () => {
@@ -38,6 +64,11 @@ export default class Home extends Component {
         </div>
 
         <button onClick={this.props.logout}>Logout</button>
+
+        <div>
+          <h3>Fetched names</h3>
+          {this.renderNames}
+        </div>
       </div>
     );
   }
