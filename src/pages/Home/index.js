@@ -34,6 +34,7 @@ export default class Home extends Component {
           <tr>
             <td>Name</td>
             <td>CPF</td>
+            <td>Sex</td>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +42,7 @@ export default class Home extends Component {
             <tr key={each.id}>
               <td>{each.name}</td>
               <td>{each.cpf}</td>
+              <td>{each.sex}</td>
             </tr>
           ))}
         </tbody>

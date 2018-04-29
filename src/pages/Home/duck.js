@@ -29,7 +29,8 @@ export function getInfo() {
           users {
             id,
             name,
-            cpf
+            cpf,
+            sex
           }
         }
       `
